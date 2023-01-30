@@ -2,94 +2,58 @@ package com.bridgelabz.employeepayrollappspringboot.model;
 
 import java.util.List;
 
+import com.bridgelabz.employeepayrollappspringboot.DTO.PayrollDto;
+
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+@Entity
+@Data
+@Table(name = "employee_payroll_data")
 public class PayrollModel {
+	@Id
+	@Column(name = "employee_id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int employeeId;
+	@Column(name = "name")
 	private String name;
 	private String profilePic;
 	private String gender;
 	private String email;
+	@ElementCollection
+	@CollectionTable(name = "employee_department", joinColumns = @JoinColumn(name = "id"))
+	@Column(name = "department")
 	private List<String> department;
 	private long salary;
 	private String notes;
 	private String startDate;
 
-	public int getEmployeeId() {
-		return employeeId;
+	public PayrollModel(PayrollDto payrollDto) {
+		this.updatePersonData(payrollDto);
 	}
 
-	public void setEmployeeId(int employeeId) {
-		this.employeeId = employeeId;
+	public void updatePersonData(PayrollDto payrollDto) {
+		this.name = payrollDto.getName();
+		this.profilePic = payrollDto.getProfilePic();
+		this.gender = payrollDto.getGender();
+		this.email = payrollDto.getEmail();
+		this.department = payrollDto.getDepartment();
+		this.salary = payrollDto.getSalary();
+		this.notes = payrollDto.getNotes();
+		this.startDate = payrollDto.getStartDate();
+
 	}
 
-	public String getName() {
-		return name;
-	}
+	public PayrollModel() {
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getProfilePic() {
-		return profilePic;
-	}
-
-	public void setProfilePic(String profilePic) {
-		this.profilePic = profilePic;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public List<String> getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(List<String> department) {
-		this.department = department;
-	}
-
-	public long getSalary() {
-		return salary;
-	}
-
-	public void setSalary(long salary) {
-		this.salary = salary;
-	}
-
-	public String getNotes() {
-		return notes;
-	}
-
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
-
-	public String getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
-
-	@Override
-	public String toString() {
-		return "PayrollModel [employeeId=" + employeeId + ", name=" + name + ", profilePic=" + profilePic + ", gender="
-				+ gender + ", email=" + email + ", department=" + department + ", salary=" + salary + ", notes=" + notes
-				+ ", startDate=" + startDate + "]";
 	}
 
 }
