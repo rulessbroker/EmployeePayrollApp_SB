@@ -17,4 +17,15 @@ public interface IPayrollService {
 	public String deleteDetails(int id);
 
 	public PayrollModel detailsGetById(int id);
+	
+	public List<PayrollModel> getEmployeePayrollByDepartment(String department);
+
+	String createRecordAndToken(PayrollDto payrollDto);
+
+	PayrollModel getRecordByToken(String token);
+
+	PayrollModel updateRecordByToken(String token, PayrollDto payrollDto);
+
+	PayrollModel deletePersonRecordByToken(String token);
+
 }
