@@ -33,39 +33,47 @@ public class PayrollController {
 
 //	Add details
 	@PostMapping("/addDetails")
-	public PayrollModel addDetails(@Valid @RequestBody PayrollDto payrollDto) {
-		PayrollModel empData = service.addEmployeeDetails(payrollDto);
-		return empData;
+	public ResponseEntity<ResponseDTO> addDetails(@Valid @RequestBody PayrollDto payrollDto) {
+		PayrollModel empData = null;
+		empData = service.addEmployeeDetails(payrollDto);
+		ResponseDTO respDTO = new ResponseDTO("Created Employee Payroll Data Successfully", empData);
+		return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
 	}
 
 //	show all data
 	@GetMapping("/showDetails")
-	public PayrollModel getAllDetails() {
+	public ResponseEntity<ResponseDTO> getAllDetails() {
 		List<PayrollModel> empDataList = null;
 		empDataList = service.getAllDetails();
-		return (PayrollModel) empDataList;
+		ResponseDTO respDTO = new ResponseDTO("Get Call Success", empDataList);
+		return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
 	}
 
 //	Find data by ID
 	@GetMapping("/find/{empId}")
-	public PayrollModel getDetailsById(@PathVariable("empId") int empId) {
+	public ResponseEntity<ResponseDTO> getDetailsById(@PathVariable("empId") int empId) {
 		PayrollModel empPayrollData = null;
 		empPayrollData = service.detailsGetById(empId);
-		return empPayrollData;
+		ResponseDTO respDTO = new ResponseDTO("Get Call for Id Successfull", empPayrollData);
+		return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
 	}
 
 //	Update Data
 	@PutMapping("/update/{empId}")
-	public PayrollModel updateDetails(@Valid @RequestBody PayrollDto payrollDto, @PathVariable int empId) {
+	public ResponseEntity<ResponseDTO> updateDetails(@Valid @RequestBody PayrollDto payrollDto,
+			@PathVariable int empId) {
 		PayrollModel empData = null;
 		empData = service.updatedetails(payrollDto, empId);
-		return empData;
+		ResponseDTO respDTO = new ResponseDTO("Updated Employee payroll Data for: ", empData);
+		return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
 
 	}
 
 //	delete details
 	@DeleteMapping("/delete/{empId}")
-	public String deleteDetails(@PathVariable("empId") int empId) {
-		return service.deleteDetails(empId);
+	public ResponseEntity<ResponseDTO> deleteDetails(@PathVariable("empId") int empId) {
+		service.deleteDetails(empId);
+		ResponseDTO respDTO = new ResponseDTO("Deleted Successfully", "Deleted id: " + empId);
+		return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
 	}
 }
